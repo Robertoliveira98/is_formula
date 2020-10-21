@@ -20,9 +20,3 @@ def validaCaracteresFormula(formula):
 def contSimbolos(formula):
     arrayMatchs = re.findall("[SPRQ][0-9]*[0-9]*", formula)
     return len(arrayMatchs)
-
-#remover ENV
-#validar todos caracteres validos controller
-#dar true para T e F
-#mostrar posicao erro
-#verificar com front padrao das mensagens de erro
