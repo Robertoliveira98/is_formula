@@ -5,12 +5,9 @@ python 3.6+
     sudo apt-get update
     sudo apt-get install -y python3-pip
 
-2 - No diretorio do Projeto: Executar setup/requirements ou instalar dependencias:
+2 - No diretorio do Projeto: Executar requirements ou instalar dependencias:
 
-    Executar setup (não sei se funciona)
-        pip3 install
-
-    Executar requirements (não sei se funciona)
+    Executar requirements:
         pip3 install -r requirements.txt
 
     Instalar dependencias (FastAPI e Uvicorn):
