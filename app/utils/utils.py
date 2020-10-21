@@ -12,7 +12,7 @@ def isSimbolo(c):
     #P Q R S P1 R1 ...
 
 def isCaractereValido(c):
-    return re.search("[PQRS]", c) or re.search("[0-9]", c) or c == '^' or c == 'v' or c == '<' or c == '-' or c == '>' or c == '(' or c == ')' or c == 'T' or c == 'F'
+    return re.search("[PQRS]", c) or re.search("[0-9]", c) or c == '^' or c == 'v' or c == '<' or c == '-' or c == '>' or c == '~' or c == '(' or c == ')' or c == 'T' or c == 'F'
 
 def validaCaracteresFormula(formula):
     tamFormula = len(formula)
