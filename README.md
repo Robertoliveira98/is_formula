@@ -5,7 +5,7 @@ python 3.6
     sudo apt-get update
     sudo apt-get install -y python3-pip
 
-2 - Executar setup/requirements ou instalar dependencias:
+2 - No diretorio do Projeto: Executar setup/requirements ou instalar dependencias:
 
     Executar setup (não sei se funciona)
         pip3 install
