@@ -15,7 +15,13 @@ def isCaractereValido(c):
     return re.search("[PQRS]", c) or re.search("[0-9]", c) or c == '^' or c == 'v' or c == '<' or c == '-' or c == '>' or c == '(' or c == ')' or c == 'T' or c == 'F'
 
 def validaCaracteresFormula(formula):
-    return True
+    tamFormula = len(formula)
+    pos = 0
+    while pos < tamFormula:
+        if not isCaractereValido(formula[pos]):
+            return {"resultado": False, "error": "caractere invalido: {c}".format(c=formula[pos])}
+        pos += 1
+    return {"resultado": True, "error": ""}
 
 def contSimbolos(formula):
     arrayMatchs = re.findall("[SPRQ][0-9]*[0-9]*", formula)
