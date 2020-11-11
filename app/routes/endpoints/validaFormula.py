@@ -8,7 +8,7 @@ from app.models.validaFormula import (isValidResponse, isValidRequest)
 
 router = APIRouter()
 
-@router.get("/", response_model=isValidResponse)
+@router.post("/", response_model=isValidResponse)
 def isFormula(request: isValidRequest):
     result = validaFormula(request)
     return result
