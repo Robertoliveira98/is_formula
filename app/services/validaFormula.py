@@ -14,14 +14,12 @@ def validaSintaxe(formula):
         if pos == 0 and formula[pos] != '(' and not isSimbolo(formula[pos]) and not isNegacao(formula[pos]):
             unparsedFormula = unParseFormula(formula[pos])
             erro = 'formula começa com: {value}'.format(value=unparsedFormula) 
-            # print('Erro0, "{value}" nao eh valido'.format(value=erro))
             result = False
             return result
         #ultima só pode ser Q ou )
         elif pos == tam - 1 and formula[pos] != ')' and not isSimbolo(formula[pos]):
             unparsedFormula = unParseFormula(formula[pos])
             erro = 'formula termina com: {value}'.format(value=unparsedFormula) 
-            # print('Erro0, "{value}" nao eh valido'.format(value=erro))
             result = False
             return result
         elif pos > 0 and pos < tam - 1:
@@ -33,7 +31,6 @@ def validaSintaxe(formula):
                         if formula[pos + 1] == ')' or (formula[pos - 1] == '(' and not isNegacao(formula[pos])):
                             unparsedFormula = unParseFormula((formula[pos] + formula[pos + 1] if not isSimbolo(formula[pos + 1]) and formula[pos + 1] != '(' else formula[pos - 1] + formula[pos]))
                             erro = unparsedFormula
-                            # print('Erro1, "{value}" nao eh valido'.format(value=erro))
                             result = False
                             return result
 
@@ -43,14 +40,12 @@ def validaSintaxe(formula):
                         (isSimbolo(formula[pos]) and isConectivo(formula[pos + 1]) and isNegacao(formula[pos + 1])):
                     unparsedFormula = unParseFormula((formula[pos - 1] + formula[pos]) if (formula[pos] == '(' and isSimbolo(formula[pos - 1])) else formula[pos] + formula[pos + 1])
                     erro = unparsedFormula
-                    # print('Erro2, "{value}" nao eh valido'.format(value=erro))
                     result = False
                     return result
             else:
                 result = False
                 unparsedFormula = unParseFormula(formula[pos])
                 erro = unparsedFormula
-                # print('Erro3, "{value}" nao eh valido'.format(value=erro))
 
         pos += 1
 
@@ -76,7 +71,6 @@ def contaParenteses(formula):
 
     if not result:
         erro = "Numero de parenteses abertos:{abertos} diferente do numero de fechados:{fechados}".format(abertos=abertos, fechados=fechados)
-        # print("""Erro4 -- Open: {open}, Close: {close}""".format(open=abertos, close=fechados))
 
     return result
 
@@ -95,11 +89,7 @@ def parseFormula(formula):
             parsedFormula = parsedFormula.replace(arrayMatchs[pos], arraySimbolosReais[pos]['name'], 1)
 
         pos += 1
-
-    # print("------------\n\nFormula:", formula)
-    # print("parsedFormula:", parsedFormula)
-    # print("arraySimbolosReais:",arraySimbolosReais)
-    # print("------------\n\n")
+        
     return parsedFormula
 
 def unParseFormula(parsedFormula):
