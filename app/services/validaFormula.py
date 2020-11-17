@@ -10,12 +10,14 @@ def validaSintaxe(formula):
     result = True
     tam = len(formula)
     while pos < tam:
+        # primeira só pode ser ( Q ou ~
         if pos == 0 and formula[pos] != '(' and not isSimbolo(formula[pos]) and not isNegacao(formula[pos]):
             unparsedFormula = unParseFormula(formula[pos])
             erro = 'formula começa com: {value}'.format(value=unparsedFormula) 
             # print('Erro0, "{value}" nao eh valido'.format(value=erro))
             result = False
             return result
+        #ultima só pode ser Q ou )
         elif pos == tam - 1 and formula[pos] != ')' and not isSimbolo(formula[pos]):
             unparsedFormula = unParseFormula(formula[pos])
             erro = 'formula termina com: {value}'.format(value=unparsedFormula) 
@@ -35,7 +37,7 @@ def validaSintaxe(formula):
                             result = False
                             return result
 
-                # valida se tem dois caracteres seguidos do msm tipo ex: PP, ^^, )P, P(, A~,  
+                # valida se tem dois caracteres seguidos invalidos ex: PP, ^^, )P, P(, A~,  
                 if (isSimbolo(formula[pos]) and isSimbolo(formula[pos + 1])) or (isConectivo(formula[pos]) and isConectivo(formula[pos + 1]) and not isNegacao(formula[pos + 1])) or \
                         (formula[pos] == ')' and isSimbolo(formula[pos + 1])) or (formula[pos] == '(' and isSimbolo(formula[pos - 1])) or \
                         (isSimbolo(formula[pos]) and isConectivo(formula[pos + 1]) and isNegacao(formula[pos + 1])):
@@ -123,8 +125,7 @@ def isFormula(formula):
     erro = ""
     result = False
     parsedFormula = parseFormula(formula)
-    if validaSintaxe(parsedFormula) and contaParenteses(parsedFormula):
-        # validaSubFormulas(parsedFormula)
+    if contaParenteses(parsedFormula) and validaSintaxe(parsedFormula):
         result = True
     
     return {"resultado": result, "error": erro}
@@ -155,7 +156,6 @@ if __name__ == '__main__':
     parsedFormula = parseFormula(formula)
     #valida sintax formula
     if validaSintaxe(parsedFormula) and contaParenteses(parsedFormula):
-        #validaSubFormulas(parsedFormula)
         print("\n--------valida--------\n")
 
 
