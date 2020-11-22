@@ -124,7 +124,7 @@ def isFormula(formula):
     global arvoreJson
     erro = ""
     result = False
-    arvoreJson = {}
+    arvoreJson = getNo()
     parsedFormula = parseFormula(formula)
     if contaParenteses(parsedFormula) and validaSintaxe(parsedFormula):
         # teste arvore
