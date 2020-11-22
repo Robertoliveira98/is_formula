@@ -2,11 +2,12 @@
 # from starlette.responses import JSONResponse
 from app.models.validaFormula import (isValidResponse, isValidRequest)
 from app.services.validaFormula import isFormula
-from app.utils.utils import (contSimbolos, validaCaracteresFormula)
+from app.utils.utils import *
 
 
 def validaFormula(request: isValidRequest):
-    response = isValidResponse(resultado = False, formula = request.formula, error = "")
+    arvoreBase = getNo()
+    response = isValidResponse(resultado = False, formula = request.formula, error = "", arvore = arvoreBase)
     valida = validaCaracteresFormula(request.formula)
     if not valida["resultado"]:
         response.error = valida["error"]
@@ -18,6 +19,9 @@ def validaFormula(request: isValidRequest):
     res = isFormula(request.formula)
     response.resultado = res["resultado"]
     response.error = res["error"]
+    print("\n\n\n")
+    print(res["arvore"])
+    response.arvore = res["arvore"]
     return response
 
 

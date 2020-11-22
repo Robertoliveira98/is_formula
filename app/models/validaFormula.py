@@ -4,16 +4,19 @@ from typing import List
 
 class isValidRequest(BaseModel):
     formula: str
-    
-class isValidResponse(BaseModel):
-    error: str
-    formula : str
-    resultado : bool
 
 class tree(BaseModel):
     name: str
-    size: List[int]
+    size: List
     children: List
 
 class criaArvoreResponse(BaseModel):
     treeData : tree
+
+class isValidResponse(BaseModel):
+    error: str
+    formula : str
+    resultado : bool
+    arvore: tree
+
+

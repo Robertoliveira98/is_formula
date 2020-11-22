@@ -1,8 +1,11 @@
-from app.utils.utils import (isNegacao, isConectivo, isSimbolo)
+from app.utils.utils import *
 import re
+
 
 erro = ""
 arraySimbolosReais = [{"name": 'A', "value": ''}, {'name': 'B', 'value': ''}, {'name': 'C', 'value': ''}, {'name': 'D', 'value': ''}, {'name': 'E', 'value': ''}, {'name': 'G', 'value': ''}, {'name': 'H', 'value': ''}, {'name': 'I', 'value': ''}, {'name': 'J', 'value': ''}, {'name': 'K', 'value': ''}]
+pilhaSubFormulas = []  
+arvoreJson = {}
 
 def validaSintaxe(formula): 
     global erro
@@ -104,21 +107,30 @@ def unParseFormula(parsedFormula):
 
     return formula
 
-def resetArraySimbolosReais():
+def resetGlobais():
+    global pilhaSubFormulas
     global arraySimbolosReais
     for simbolo in arraySimbolosReais:
         simbolo['value'] = ''
+    
+    pilhaSubFormulas = []
 
 def isFormula(formula):
-    resetArraySimbolosReais()
+    resetGlobais()
     global erro
+    global arvoreJson
     erro = ""
     result = False
+    arvoreJson = {}
     parsedFormula = parseFormula(formula)
     if contaParenteses(parsedFormula) and validaSintaxe(parsedFormula):
+        # teste arvore
+        print("-------------", parsedFormula)
+        validaSubFormulas(parsedFormula)
         result = True
-    
-    return {"resultado": result, "error": erro}
+        print("eh-----", arvoreJson)
+
+    return {"resultado": result, "error": erro, "arvore" : arvoreJson}
       
 #somente para testes
 def pegaFormula():
@@ -149,4 +161,179 @@ if __name__ == '__main__':
         print("\n--------valida--------\n")
 
 
-         
+# --------------- teste arvore ---------------
+
+
+def extraiSubFormula(posInicial, tamMax, formulaAux, subFormulas):
+    key = 'sf' + str(posInicial)
+    sub = {key: '(', "valor": '', "chave": key}
+    pos = posInicial
+
+    while pos < tamMax:
+        print("-----------")
+        ca = contPA(sub[key])
+        print("-----------2")
+        cf = contPF(sub[key])
+        print("-----",ca)
+        print("-----",cf)
+        if formulaAux[pos + 1] and formulaAux[pos + 1] != ')':
+            sub[key] = sub[key] + formulaAux[pos + 1]
+        elif formulaAux[pos + 1] == ')' and ca != cf + 1:
+            sub[key] = sub[key] + formulaAux[pos + 1]
+        else:
+            sub[key] = sub[key] + ')'
+            sub["valor"] = sub[key].replace("(", "")
+            sub["valor"] = sub["valor"].replace(")", "")
+            sub["chave"] = key
+            subFormulas.append(sub)
+            return posInicial
+        pos += 1
+
+
+def percorreFormula(formula, subFormulas):
+    global erro
+    formulaAux = formula
+    pos = 0
+    tamMax = len(formulaAux)
+    while pos < tamMax:
+        if formulaAux[pos] == '(' and formulaAux[pos + 1] != '(':
+            if formulaAux.find(')', pos) != -1:
+                pos = extraiSubFormula(pos, tamMax, formulaAux, subFormulas)
+            else:
+                formula = ''
+                for x in range(pos, tamMax):
+                    erro += formulaAux[x]
+                print('erroooooo', erro)
+                return formula
+        elif formulaAux == 'sf0' or tamMax <= 5:
+            formula = ''
+            print('ok')
+            return formula
+
+        pos += 1
+
+    return formula
+
+
+def montaFormulaGenerica(subFormulas, _formula):
+    pos = 0
+    max = len(subFormulas)
+    while pos < max:
+        subFormula = subFormulas[pos]
+        nomeSubFormula = list(subFormula.keys())[0]
+        valorSubFormula = subFormulas[pos][nomeSubFormula]
+
+        posA = _formula.find(valorSubFormula)  # pos antes da dubFormula
+
+        # Exist binary isConectivo
+        try:
+            if isConectivo(_formula[posA - 1]) and isConectivo(_formula[s1 + len(valorSubFormula)]):
+                nomeSubFormula = '(' + nomeSubFormula
+                if max == 1:
+                    _formula = _formula + ')'
+            elif isConectivo(_formula[posA - 1]) and _formula[posA + len(valorSubFormula)] != ')' and not isConectivo(_formula[posA + len(valorSubFormula)]):
+                nomeSubFormula = nomeSubFormula + ')'
+        except:
+            pass
+
+        _formula = _formula.replace(valorSubFormula, nomeSubFormula)
+        pos += 1
+
+    return _formula
+
+
+def validaSubFormulas(formula):
+    global pilhaSubFormulas
+    global arvoreJson
+    subFormulas = []
+    _formula = percorreFormula(formula, subFormulas)
+    if len(subFormulas) > 0:
+        for subForm in subFormulas:
+            pilhaSubFormulas.append(subForm)
+    
+    print("\n\n\n")
+    print(pilhaSubFormulas)
+    print("\n\n\n")
+    if _formula:
+        formula = montaFormulaGenerica(subFormulas, _formula)
+        if len(formula) > 0 and formula != 'sf0' and formula != _formula:
+            validaSubFormulas(formula)
+        else:
+            replaceSubformulas()
+            # print("\n\n\n")
+            # print(pilhaSubFormulas)
+            # print("\n\n\n")
+            newArvoreJson = criaArvoreJson()
+            if newArvoreJson != None :
+                arvoreJson = newArvoreJson
+            print("==========retornou", arvoreJson)
+
+def replaceSubformulas():
+    global pilhaSubFormulas
+    for subForm in pilhaSubFormulas:
+        for subFormPesquisa in pilhaSubFormulas:
+            match = subFormPesquisa["valor"].find(subForm["valor"])
+            if subForm["valor"] != subFormPesquisa["valor"] and match > -1:
+            #     print("\n\ntroqui: ",subForm["valor"])
+            #     print("por: ", subForm["chave"])
+            #     print("aqui: ", subFormPesquisa["valor"])
+            #     print("\n\n")
+                subFormPesquisa["valor"] = subFormPesquisa["valor"].replace(subForm["valor"], subForm["chave"])
+
+def findElementByChave(chave):
+    global pilhaSubFormulas
+    for subForm in pilhaSubFormulas:
+        if subForm["chave"] == chave:
+            return subForm
+    return ""
+
+def criaArvoreJson():
+    global pilhaSubFormulas
+    subForm = findElementByChave("sf0")
+    #PRECISA DESSA VALIDACAO???
+    if contsubFormulas(subForm["valor"]) > 0:
+        pos = findConectivoPos(subForm["valor"])
+        no = getNo()
+        
+        no["name"] = unParseFormula(subForm["valor"][pos])
+        splitedSubFormulas = subForm["valor"].split(subForm["valor"][pos])
+
+        for splitedSubForm in splitedSubFormulas:
+            if splitedSubForm != '':
+                children = doChildren(splitedSubForm)
+                no["children"].append(children)
+    print("\n\n\n")
+    print(no)
+    return no
+    print("\n\n\n")
+    
+
+def doChildren(sf):
+    print("aqui0")
+    if contsubFormulas(sf) == 1:
+        
+        print("aqui1")
+        subForm = findElementByChave(sf)
+        while findConectivoPos(subForm["valor"]) == -1 and contsubFormulas(subForm["valor"]) == 1:
+            subForm = findElementByChave(subForm["valor"])
+            print("aqui2")
+
+        pos = findConectivoPos(subForm["valor"])
+        no = getNo()
+        print("aqui3")
+        no["name"] = unParseFormula(subForm["valor"][pos])
+        splitedSubFormulas = subForm["valor"].split(subForm["valor"][pos])
+        print("aqui4  :", splitedSubFormulas)
+        for splitedSubForm in splitedSubFormulas:
+            if splitedSubForm != '':
+                children = doChildren(splitedSubForm)
+                no["children"].append(children)
+        return no
+                
+    elif isSimbolo(sf):
+        no = getNo()
+        no["name"] = unParseFormula(sf)
+        return no
+        
+
+

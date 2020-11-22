@@ -26,3 +26,36 @@ def validaCaracteresFormula(formula):
 def contSimbolos(formula):
     arrayMatchs = re.findall("[SPRQ][0-9]*[0-9]*", formula)
     return len(arrayMatchs)
+
+def contsubFormulas(formula):
+    arrayMatchs = re.findall("sf[0-9]*[0-9]*", formula)
+    return len(arrayMatchs)
+
+def contConectivo(formula):
+    arrayMatchs = re.findall("[~^v-=]", formula)
+    return len(arrayMatchs)
+
+def contPA(formula):
+    print("---a", formula)
+    arrayMatchs = re.findall("[(]", formula)
+    return len(arrayMatchs)
+
+def contPF(formula):
+    print("---f", formula)
+    arrayMatchs = re.findall("[)]", formula)
+    return len(arrayMatchs)
+
+def getNo():
+    return {
+        "name": "",
+        "size": [100,100],
+        "children": []
+    }
+
+def findConectivoPos(formula):
+    i = 0
+    while i < len(formula):
+        if isConectivo(formula[i]):
+            return i
+        i += 1
+    return -1
