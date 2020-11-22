@@ -78,8 +78,9 @@ def contaParenteses(formula):
     return result
 
 def parseFormula(formula):
-    parsedFormula = formula.replace("->", "-")
-    parsedFormula = parsedFormula.replace("<->", "=")
+    
+    parsedFormula = formula.replace("<->", "=")
+    parsedFormula = parsedFormula.replace("->", "-")
     
     global arraySimbolosReais
     arrayMatchs = re.findall("[SPRQ][0-9]*[0-9]*", parsedFormula)
@@ -110,10 +111,12 @@ def unParseFormula(parsedFormula):
 def resetGlobais():
     global pilhaSubFormulas
     global arraySimbolosReais
+    global arvoreJson
     for simbolo in arraySimbolosReais:
         simbolo['value'] = ''
     
     pilhaSubFormulas = []
+    arvoreJson = {}
 
 def isFormula(formula):
     resetGlobais()
