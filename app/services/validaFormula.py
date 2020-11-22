@@ -128,10 +128,8 @@ def isFormula(formula):
     parsedFormula = parseFormula(formula)
     if contaParenteses(parsedFormula) and validaSintaxe(parsedFormula):
         # teste arvore
-        print("-------------", parsedFormula)
         validaSubFormulas(parsedFormula)
         result = True
-        print("eh-----", arvoreJson)
 
     return {"resultado": result, "error": erro, "arvore" : arvoreJson}
       
@@ -173,12 +171,8 @@ def extraiSubFormula(posInicial, tamMax, formulaAux, subFormulas):
     pos = posInicial
 
     while pos < tamMax:
-        print("-----------")
         ca = contPA(sub[key])
-        print("-----------2")
         cf = contPF(sub[key])
-        print("-----",ca)
-        print("-----",cf)
         if formulaAux[pos + 1] and formulaAux[pos + 1] != ')':
             sub[key] = sub[key] + formulaAux[pos + 1]
         elif formulaAux[pos + 1] == ')' and ca != cf + 1:
@@ -206,11 +200,9 @@ def percorreFormula(formula, subFormulas):
                 formula = ''
                 for x in range(pos, tamMax):
                     erro += formulaAux[x]
-                print('erroooooo', erro)
                 return formula
         elif formulaAux == 'sf0' or tamMax <= 5:
             formula = ''
-            print('ok')
             return formula
 
         pos += 1
@@ -254,22 +246,16 @@ def validaSubFormulas(formula):
         for subForm in subFormulas:
             pilhaSubFormulas.append(subForm)
     
-    print("\n\n\n")
     print(pilhaSubFormulas)
-    print("\n\n\n")
     if _formula:
         formula = montaFormulaGenerica(subFormulas, _formula)
         if len(formula) > 0 and formula != 'sf0' and formula != _formula:
             validaSubFormulas(formula)
         else:
             replaceSubformulas()
-            # print("\n\n\n")
-            # print(pilhaSubFormulas)
-            # print("\n\n\n")
             newArvoreJson = criaArvoreJson()
             if newArvoreJson != None :
                 arvoreJson = newArvoreJson
-            print("==========retornou", arvoreJson)
 
 def replaceSubformulas():
     global pilhaSubFormulas
@@ -277,10 +263,6 @@ def replaceSubformulas():
         for subFormPesquisa in pilhaSubFormulas:
             match = subFormPesquisa["valor"].find(subForm["valor"])
             if subForm["valor"] != subFormPesquisa["valor"] and match > -1:
-            #     print("\n\ntroqui: ",subForm["valor"])
-            #     print("por: ", subForm["chave"])
-            #     print("aqui: ", subFormPesquisa["valor"])
-            #     print("\n\n")
                 subFormPesquisa["valor"] = subFormPesquisa["valor"].replace(subForm["valor"], subForm["chave"])
 
 def findElementByChave(chave):
@@ -305,28 +287,20 @@ def criaArvoreJson():
             if splitedSubForm != '':
                 children = doChildren(splitedSubForm)
                 no["children"].append(children)
-    print("\n\n\n")
-    print(no)
     return no
-    print("\n\n\n")
     
 
 def doChildren(sf):
-    print("aqui0")
     if contsubFormulas(sf) == 1:
         
-        print("aqui1")
         subForm = findElementByChave(sf)
         while findConectivoPos(subForm["valor"]) == -1 and contsubFormulas(subForm["valor"]) == 1:
             subForm = findElementByChave(subForm["valor"])
-            print("aqui2")
 
         pos = findConectivoPos(subForm["valor"])
         no = getNo()
-        print("aqui3")
         no["name"] = unParseFormula(subForm["valor"][pos])
         splitedSubFormulas = subForm["valor"].split(subForm["valor"][pos])
-        print("aqui4  :", splitedSubFormulas)
         for splitedSubForm in splitedSubFormulas:
             if splitedSubForm != '':
                 children = doChildren(splitedSubForm)
