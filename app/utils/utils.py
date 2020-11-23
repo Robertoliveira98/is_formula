@@ -88,3 +88,7 @@ def validaNotNot(formula):
     if len(arrayMatchs) > 0:
         result = True
     return result
+
+def removeEspaco(formula):
+    formulaSemEspaco = formula.replace(" ", "")
+    return formulaSemEspaco
