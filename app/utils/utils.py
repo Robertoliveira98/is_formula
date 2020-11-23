@@ -57,3 +57,12 @@ def findConectivoPos(formula):
             return i
         i += 1
     return -1
+
+def validaParenteseCompleto(formula):
+    nP = contPA(formula)
+    nConectivo = contConectivo(formula)
+    result = False
+    if nP != nConectivo:
+        result = True
+    
+    return result

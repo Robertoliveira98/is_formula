@@ -15,6 +15,9 @@ def validaFormula(request: isValidRequest):
     elif contSimbolos(request.formula) > 10:
         response.error = "possui mais de 10 símbolos proposicionais"
         return response
+    elif validaParenteseCompleto(formula):
+        response.error = "Parentização não está completa"
+        return response
 
     res = isFormula(request.formula)
     response.resultado = res["resultado"]
