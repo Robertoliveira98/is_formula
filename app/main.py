@@ -11,7 +11,7 @@ set_dotenv()
 app: FastAPI = FastAPI(
     redoc_url=None,
     openapi_url=f"{getenv('API_PREFIX')}/openapi.json",
-    title="REST API valida se é uma fórmula da Lógica Proposicional ",
+    title="REST API que valida a fórmula informada é uma fórmula da Lógica Proposicional",
     description="",
     version="1.0.0"
 )

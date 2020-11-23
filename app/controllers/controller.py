@@ -13,7 +13,7 @@ def validaFormula(request: isValidRequest):
         response.error = valida["error"]
         return response
     elif contSimbolos(request.formula) > 10:
-        response.error = "possui mais de 10 símbolos proposicionais"
+        response.error = "A fórmula possui mais de 10 Símbolos Proposicionais."
         return response
 
     res = isFormula(request.formula)
