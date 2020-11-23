@@ -1,4 +1,7 @@
+##Pré-requisitos
+
 python 3.6+
+Usar Linux ou WSL(Terminal Linux no Windows - https://bit.ly/335RHtS) para funcionar no Windows
 
 1 - Instalar PIP3:
 
