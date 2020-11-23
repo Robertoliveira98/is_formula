@@ -15,7 +15,7 @@ def validaFormula(request: isValidRequest):
     elif contSimbolos(request.formula) > 10:
         response.error = "A fórmula possui mais de 10 Símbolos Proposicionais."
         return response
-    elif validaParenteseCompleto(formula):
+    elif validaParenteseCompleto(request.formula):
         response.error = "Parentização não está completa"
         return response
 

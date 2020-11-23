@@ -35,6 +35,21 @@ def contConectivo(formula):
     arrayMatchs = re.findall("[~^v-=]", formula)
     return len(arrayMatchs)
 
+def contConectivoB(formula):
+    conta = 0
+    arrayMatchs = re.findall("[~]", formula)
+    conta += len(arrayMatchs)
+    arrayMatchs = re.findall("[\^]", formula)
+    conta += len(arrayMatchs)
+    arrayMatchs = re.findall("[v]", formula)
+    conta += len(arrayMatchs)
+    arrayMatchs = re.findall("[(<->)]", formula)
+    conta += len(arrayMatchs)
+    arrayMatchs = re.findall("[(->)]", formula)
+    conta += len(arrayMatchs)
+
+    return conta
+
 def contPA(formula):
     arrayMatchs = re.findall("[(]", formula)
     return len(arrayMatchs)
@@ -60,9 +75,9 @@ def findConectivoPos(formula):
 
 def validaParenteseCompleto(formula):
     nP = contPA(formula)
-    nConectivo = contConectivo(formula)
+    nConectivo = contConectivoB(formula)
     result = False
-    if nP != nConectivo:
+    if nP >= nConectivo:
         result = True
     
     return result
