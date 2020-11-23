@@ -19,7 +19,7 @@ def validaCaracteresFormula(formula):
     pos = 0
     while pos < tamFormula:
         if not isCaractereValido(formula[pos]):
-            return {"resultado": False, "error": "caractere invalido: {c}".format(c=formula[pos])}
+            return {"resultado": False, "error": "Caractere inválido: {c}.".format(c=formula[pos])}
         pos += 1
     return {"resultado": True, "error": ""}
 

@@ -16,13 +16,13 @@ def validaSintaxe(formula):
         # primeira só pode ser ( Q ou ~
         if pos == 0 and formula[pos] != '(' and not isSimbolo(formula[pos]) and not isNegacao(formula[pos]):
             unparsedFormula = unParseFormula(formula[pos])
-            erro = 'formula começa com: {value}'.format(value=unparsedFormula) 
+            erro = 'A fórmula começa com: {value}.'.format(value=unparsedFormula) 
             result = False
             return result
         #ultima só pode ser Q ou )
         elif pos == tam - 1 and formula[pos] != ')' and not isSimbolo(formula[pos]):
             unparsedFormula = unParseFormula(formula[pos])
-            erro = 'formula termina com: {value}'.format(value=unparsedFormula) 
+            erro = 'A fórmula termina com: {value}.'.format(value=unparsedFormula) 
             result = False
             return result
         elif pos > 0 and pos < tam - 1:
@@ -73,7 +73,7 @@ def contaParenteses(formula):
         result = True
 
     if not result:
-        erro = "Numero de parenteses abertos:{abertos} diferente do numero de fechados:{fechados}".format(abertos=abertos, fechados=fechados)
+        erro = "Número de parênteses abertos: {abertos}. Número de parênteses fechados: {fechados}.".format(abertos=abertos, fechados=fechados)
 
     return result
 
