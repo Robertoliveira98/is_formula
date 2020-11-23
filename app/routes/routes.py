@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.routes.endpoints import (validaFormula, criaArvore)
+from app.routes.endpoints import (validaFormula)
 
 routers = APIRouter()
 
