@@ -126,6 +126,7 @@ def isFormula(formula):
     result = False
     arvoreJson = getNo()
     parsedFormula = parseFormula(formula)
+    print(parsedFormula)
     if contaParenteses(parsedFormula) and validaSintaxe(parsedFormula):
         # teste arvore
         validaSubFormulas(parsedFormula)
@@ -246,7 +247,6 @@ def validaSubFormulas(formula):
         for subForm in subFormulas:
             pilhaSubFormulas.append(subForm)
     
-    print(pilhaSubFormulas)
     if _formula:
         formula = montaFormulaGenerica(subFormulas, _formula)
         if len(formula) > 0 and formula != 'sf0' and formula != _formula:
@@ -274,6 +274,7 @@ def findElementByChave(chave):
 
 def criaArvoreJson():
     global pilhaSubFormulas
+    print(pilhaSubFormulas)
     subForm = findElementByChave("sf0")
     #PRECISA DESSA VALIDACAO???
     if contsubFormulas(subForm["valor"]) > 0:

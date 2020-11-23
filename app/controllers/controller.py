@@ -19,8 +19,6 @@ def validaFormula(request: isValidRequest):
     res = isFormula(request.formula)
     response.resultado = res["resultado"]
     response.error = res["error"]
-    print("\n\n\n")
-    print(res["arvore"])
     response.arvore = res["arvore"]
     return response
 

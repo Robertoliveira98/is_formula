@@ -36,12 +36,10 @@ def contConectivo(formula):
     return len(arrayMatchs)
 
 def contPA(formula):
-    print("---a", formula)
     arrayMatchs = re.findall("[(]", formula)
     return len(arrayMatchs)
 
 def contPF(formula):
-    print("---f", formula)
     arrayMatchs = re.findall("[)]", formula)
     return len(arrayMatchs)
 
